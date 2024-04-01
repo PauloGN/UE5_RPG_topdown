@@ -37,9 +37,19 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> moveAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> lookAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> allowCameraAction;
+
 	void Move(const FInputActionValue& InputActionValue);
+	void Look(const FInputActionValue& InputActionValue);
+	void AllowCameraMove(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
 	IEnemyInterface* lastActor;
 	IEnemyInterface* thisActor;
+
+	bool bAllowCameraAction = false;
 };

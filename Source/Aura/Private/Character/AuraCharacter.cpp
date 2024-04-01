@@ -6,6 +6,7 @@
 #include <Player/AuraPlayerState.h>
 
 #include "AbilitySystemComponent.h"
+#include <GameFramework/SpringArmComponent.h>
 
 AAuraCharacter::AAuraCharacter()
 {
@@ -18,6 +19,11 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
+
+	cameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	cameraBoom->SetupAttachment(GetMesh());
+	cameraBoom->TargetArmLength = 600.0f;
+	cameraBoom->bUsePawnControlRotation = true;
 }
 
 void AAuraCharacter::PossessedBy(AController* NewController)

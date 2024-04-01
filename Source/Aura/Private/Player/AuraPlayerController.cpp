@@ -3,6 +3,7 @@
 #include "Player/AuraPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Character/AuraCharacter.h"
 #include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -32,7 +33,7 @@ void AAuraPlayerController::BeginPlay()
 	DefaultMouseCursor = EMouseCursor::Default;
 
 	FInputModeGameAndUI inputModeData;
-
+	
 	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	inputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(inputModeData);
@@ -45,6 +46,9 @@ void AAuraPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* enhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
 	enhancedInputComponent->BindAction(moveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+	enhancedInputComponent->BindAction(lookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+	enhancedInputComponent->BindAction(allowCameraAction, ETriggerEvent::Triggered, this, &ThisClass::AllowCameraMove);
+	enhancedInputComponent->BindAction(allowCameraAction, ETriggerEvent::Completed, this, &ThisClass::AllowCameraMove);
 }
 
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -61,6 +65,52 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		controlledPawn->AddMovementInput(forwardDirection, InputAAxisVector.Y);
 		controlledPawn->AddMovementInput(rightdDirection, InputAAxisVector.X);
+	}
+}
+
+void AAuraPlayerController::Look(const FInputActionValue& InputActionValue)
+{
+	if(!bAllowCameraAction)
+	{
+		return;
+	}
+
+	// Get the input values
+	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
+
+	// Get the controlled pawn (assuming it's the character)
+	APawn* ControlledPawn = GetPawn();
+
+	// Check if the controlled pawn exists and is of type AAuraCharacter
+	if (ControlledPawn && ControlledPawn->IsA<AAuraCharacter>())
+	{
+		ControlledPawn->AddControllerYawInput(LookAxisVector.X);
+		ControlledPawn->AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void AAuraPlayerController::AllowCameraMove(const FInputActionValue& InputActionValue)
+{
+	bAllowCameraAction = InputActionValue.Get<bool>();
+
+	if(bAllowCameraAction)
+	{
+		bShowMouseCursor = false;
+		GEngine->AddOnScreenDebugMessage(1, 10, FColor::Blue, "Down");
+		FInputModeGameOnly gameInput;
+		gameInput.SetConsumeCaptureMouseDown(true);
+		SetInputMode(gameInput);
+	}else
+	{
+		GEngine->AddOnScreenDebugMessage(1, 10, FColor::Blue, "Up");
+		bShowMouseCursor = true;
+		DefaultMouseCursor = EMouseCursor::Default;
+
+		FInputModeGameAndUI inputModeData;
+
+		inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		inputModeData.SetHideCursorDuringCapture(false);
+		SetInputMode(inputModeData);
 	}
 }
 
