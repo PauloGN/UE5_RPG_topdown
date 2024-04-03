@@ -4,7 +4,17 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Character/AuraCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Interaction/EnemyInterface.h"
+
+
+namespace 
+{
+	constexpr float MAX_ARM_LENGTH = 700.0f;
+	constexpr float MIN_ARM_LENGTH = 150.0f;
+	constexpr float ARM_LENGTH_RATE = 20.0f;
+}
+
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -37,6 +47,20 @@ void AAuraPlayerController::BeginPlay()
 	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	inputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(inputModeData);
+
+	//Get USpringArm Comp
+	// Get a reference to the character
+	AAuraCharacter* AuraChar = Cast<AAuraCharacter>(GetPawn());
+
+	if (AuraChar)
+	{
+		// Access the SpringArm component
+		USpringArmComponent* SpringArm = AuraChar->FindComponentByClass<USpringArmComponent>();
+		if (SpringArm)
+		{
+			cameraBoom = SpringArm;
+		}
+	}
 }
 
 void AAuraPlayerController::SetupInputComponent()
@@ -49,6 +73,8 @@ void AAuraPlayerController::SetupInputComponent()
 	enhancedInputComponent->BindAction(lookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	enhancedInputComponent->BindAction(allowCameraAction, ETriggerEvent::Triggered, this, &ThisClass::AllowCameraMove);
 	enhancedInputComponent->BindAction(allowCameraAction, ETriggerEvent::Completed, this, &ThisClass::AllowCameraMove);
+	enhancedInputComponent->BindAction(zoomIn, ETriggerEvent::Triggered, this, &ThisClass::ZoomInFun);
+	enhancedInputComponent->BindAction(zoomOut, ETriggerEvent::Triggered, this, &ThisClass::ZoomOutFun);
 }
 
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -111,6 +137,24 @@ void AAuraPlayerController::AllowCameraMove(const FInputActionValue& InputAction
 		inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 		inputModeData.SetHideCursorDuringCapture(false);
 		SetInputMode(inputModeData);
+	}
+}
+
+void AAuraPlayerController::ZoomInFun(const FInputActionValue& InputActionValue)
+{
+	cameraBoom->TargetArmLength -= ARM_LENGTH_RATE;
+	if (cameraBoom->TargetArmLength <= MIN_ARM_LENGTH)
+	{
+		cameraBoom->TargetArmLength = MIN_ARM_LENGTH;
+	}
+}
+
+void AAuraPlayerController::ZoomOutFun(const FInputActionValue& InputActionValue)
+{
+	cameraBoom->TargetArmLength += ARM_LENGTH_RATE;
+	if (cameraBoom->TargetArmLength >= MAX_ARM_LENGTH)
+	{
+		cameraBoom->TargetArmLength = MAX_ARM_LENGTH;
 	}
 }
 
