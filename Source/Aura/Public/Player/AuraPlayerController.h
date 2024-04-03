@@ -31,6 +31,8 @@ protected:
 
 private:
 
+#pragma region INPUTS
+
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> auraContext;
 
@@ -43,13 +45,26 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> allowCameraAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> zoomIn;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> zoomOut;
+
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
 	void AllowCameraMove(const FInputActionValue& InputActionValue);
+
+	void ZoomInFun(const FInputActionValue& InputActionValue);
+	void ZoomOutFun(const FInputActionValue& InputActionValue);
+#pragma endregion
 
 	void CursorTrace();
 	IEnemyInterface* lastActor;
 	IEnemyInterface* thisActor;
 
 	bool bAllowCameraAction = false;
+
+	TObjectPtr<class USpringArmComponent> cameraBoom;
+
 };
