@@ -7,14 +7,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Interaction/EnemyInterface.h"
 
-
 namespace 
 {
 	constexpr float MAX_ARM_LENGTH = 700.0f;
 	constexpr float MIN_ARM_LENGTH = 150.0f;
 	constexpr float ARM_LENGTH_RATE = 20.0f;
 }
-
 
 AAuraPlayerController::AAuraPlayerController()
 {
