@@ -6,6 +6,6 @@
 void UAuraUserWidget::SetWidgetController(UObject* InWidgetController)
 {
 	widgetController = InWidgetController;
-	//kick off the the function under witch is blueprint implementable event
+	//kick off the the function bellow, witch is blueprint implementable event
 	WidgetControllerSet();
 }
