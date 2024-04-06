@@ -60,8 +60,8 @@ private:
 #pragma endregion
 
 	void CursorTrace();
-	IEnemyInterface* lastActor;
-	IEnemyInterface* thisActor;
+	TObjectPtr <IEnemyInterface> lastActor;
+	TObjectPtr <IEnemyInterface>  thisActor;
 
 	bool bAllowCameraAction = false;
 
