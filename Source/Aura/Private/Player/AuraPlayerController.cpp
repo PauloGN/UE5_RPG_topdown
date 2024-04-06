@@ -24,7 +24,6 @@ void AAuraPlayerController::PlayerTick(float DeltaSeconds)
 	Super::PlayerTick(DeltaSeconds);
 
 	CursorTrace();
-
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -34,7 +33,6 @@ void AAuraPlayerController::BeginPlay()
 
 	UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	check(subsystem);
-
 	subsystem->AddMappingContext(auraContext, 0);
 
 	bShowMouseCursor = true;
