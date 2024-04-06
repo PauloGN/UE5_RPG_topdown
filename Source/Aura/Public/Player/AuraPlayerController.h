@@ -64,7 +64,6 @@ private:
 	TObjectPtr <IEnemyInterface>  thisActor;
 
 	bool bAllowCameraAction = false;
-
 	TObjectPtr<class USpringArmComponent> cameraBoom;
 
 };

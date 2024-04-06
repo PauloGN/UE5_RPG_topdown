@@ -23,7 +23,10 @@ void AAuraPlayerController::PlayerTick(float DeltaSeconds)
 {
 	Super::PlayerTick(DeltaSeconds);
 
-	CursorTrace();
+	if(bShowMouseCursor)
+	{
+		CursorTrace();
+	}
 }
 
 void AAuraPlayerController::BeginPlay()
