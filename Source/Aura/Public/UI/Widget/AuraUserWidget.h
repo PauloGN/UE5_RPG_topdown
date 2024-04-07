@@ -24,6 +24,7 @@ public:
 
 protected:
 
+	//Acting like a begin play
 	UFUNCTION(BlueprintImplementableEvent)
 	void WidgetControllerSet();
 	
