@@ -1,14 +1,13 @@
 // Copyright Paulo R Santos. - Stephen U
 
-
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	Inithealth(100.0f);
-	InitmaxHealth(100.0f);
-	Initmana(100.0f);
+	Inithealth(25);
+	InitmaxHealth(100);
+	Initmana(100);
 	InitmaxMana(100.0f);
 }
 

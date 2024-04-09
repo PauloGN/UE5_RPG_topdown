@@ -7,6 +7,9 @@
 
 #include "AbilitySystemComponent.h"
 #include <GameFramework/SpringArmComponent.h>
+#include <UI/HUD/AuraHUD.h>
+
+#include "Player/AuraPlayerController.h"
 
 AAuraCharacter::AAuraCharacter()
 {
@@ -19,7 +22,7 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
-
+	
 	cameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	cameraBoom->SetupAttachment(GetMesh());
 	cameraBoom->TargetArmLength = 600.0f;
@@ -49,4 +52,13 @@ void AAuraCharacter::InitAbilityActorInfo()
 	// Set the pointers
 	abilitySystemComponent = auraPlayerState->GetAbilitySystemComponent();
 	attributeSet = auraPlayerState->GetAttributeSet();
+
+	if(AAuraPlayerController* auraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		if(AAuraHUD* auraHud = Cast<AAuraHUD>(auraPlayerController->GetHUD()))
+		{
+			auraHud->InitOverlay(auraPlayerController, auraPlayerState, abilitySystemComponent, attributeSet);
+		}
+	}
+
 }

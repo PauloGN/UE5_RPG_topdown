@@ -1,20 +1,20 @@
 // Copyright Paulo R Santos. - Stephen U
 
 #include "Player/AuraPlayerController.h"
+
+#include <Interaction/TargetInterface.h>
+
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Character/AuraCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Interaction/EnemyInterface.h"
-
 
 namespace 
 {
 	constexpr float MAX_ARM_LENGTH = 700.0f;
 	constexpr float MIN_ARM_LENGTH = 150.0f;
-	constexpr float ARM_LENGTH_RATE = 20.0f;
+	constexpr float ARM_LENGTH_RATE = 10.0f;
 }
-
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -25,8 +25,10 @@ void AAuraPlayerController::PlayerTick(float DeltaSeconds)
 {
 	Super::PlayerTick(DeltaSeconds);
 
-	CursorTrace();
-
+	if(bShowMouseCursor)
+	{
+		CursorTrace();
+	}
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -35,15 +37,15 @@ void AAuraPlayerController::BeginPlay()
 	check(auraContext);
 
 	UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(subsystem);
-
-	subsystem->AddMappingContext(auraContext, 0);
+	if(subsystem)
+	{
+		subsystem->AddMappingContext(auraContext, 0);
+	}
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
 
 	FInputModeGameAndUI inputModeData;
-	
 	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	inputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(inputModeData);
@@ -110,6 +112,7 @@ void AAuraPlayerController::Look(const FInputActionValue& InputActionValue)
 	// Check if the controlled pawn exists and is of type AAuraCharacter
 	if (ControlledPawn && ControlledPawn->IsA<AAuraCharacter>())
 	{
+		//Note: To control camera rotation SpringAmr should activate usePawnControlRotation as well inherit pitch, roll and yaw
 		ControlledPawn->AddControllerYawInput(LookAxisVector.X);
 		ControlledPawn->AddControllerPitchInput(LookAxisVector.Y);
 	}
@@ -169,7 +172,7 @@ void AAuraPlayerController::CursorTrace()
 	}
 
 	lastActor = thisActor;
-	thisActor = Cast<IEnemyInterface>(cursorHit.GetActor());
+	thisActor = Cast<ITargetInterface>(cursorHit.GetActor());
 
 	/**
 	 *	Line trace from cursor. There are several scenarios
@@ -204,7 +207,7 @@ void AAuraPlayerController::CursorTrace()
 			//case c
 			lastActor->UnHighlightActor();
 
-		}else//both valid
+		}else//both actors are not null (both are valid)
 		{
 			if(lastActor != thisActor)
 			{
