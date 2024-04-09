@@ -207,7 +207,7 @@ void AAuraPlayerController::CursorTrace()
 			//case c
 			lastActor->UnHighlightActor();
 
-		}else//both valid
+		}else//both actors are not null (both are valid)
 		{
 			if(lastActor != thisActor)
 			{
