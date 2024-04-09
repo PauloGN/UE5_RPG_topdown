@@ -11,7 +11,7 @@ namespace
 {
 	constexpr float MAX_ARM_LENGTH = 700.0f;
 	constexpr float MIN_ARM_LENGTH = 150.0f;
-	constexpr float ARM_LENGTH_RATE = 20.0f;
+	constexpr float ARM_LENGTH_RATE = 10.0f;
 }
 
 AAuraPlayerController::AAuraPlayerController()
@@ -44,7 +44,6 @@ void AAuraPlayerController::BeginPlay()
 	DefaultMouseCursor = EMouseCursor::Default;
 
 	FInputModeGameAndUI inputModeData;
-	
 	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	inputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(inputModeData);
@@ -111,6 +110,7 @@ void AAuraPlayerController::Look(const FInputActionValue& InputActionValue)
 	// Check if the controlled pawn exists and is of type AAuraCharacter
 	if (ControlledPawn && ControlledPawn->IsA<AAuraCharacter>())
 	{
+		//Note: To control camera rotation SpringAmr should activate usePawnControlRotation as well inherit pitch, roll and yaw
 		ControlledPawn->AddControllerYawInput(LookAxisVector.X);
 		ControlledPawn->AddControllerPitchInput(LookAxisVector.Y);
 	}
