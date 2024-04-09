@@ -1,11 +1,13 @@
 // Copyright Paulo R Santos. - Stephen U
 
 #include "Player/AuraPlayerController.h"
+
+#include <Interaction/TargetInterface.h>
+
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Character/AuraCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Interaction/EnemyInterface.h"
 
 namespace 
 {
@@ -170,7 +172,7 @@ void AAuraPlayerController::CursorTrace()
 	}
 
 	lastActor = thisActor;
-	thisActor = Cast<IEnemyInterface>(cursorHit.GetActor());
+	thisActor = Cast<ITargetInterface>(cursorHit.GetActor());
 
 	/**
 	 *	Line trace from cursor. There are several scenarios

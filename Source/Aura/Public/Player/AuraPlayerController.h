@@ -9,7 +9,7 @@
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
-class IEnemyInterface;
+class ITargetInterface;
 /**
  * 
  */
@@ -60,10 +60,9 @@ private:
 #pragma endregion
 
 	void CursorTrace();
-	TObjectPtr <IEnemyInterface> lastActor;
-	TObjectPtr <IEnemyInterface>  thisActor;
+	TObjectPtr <ITargetInterface> lastActor;
+	TObjectPtr <ITargetInterface>  thisActor;
 
 	bool bAllowCameraAction = false;
 	TObjectPtr<class USpringArmComponent> cameraBoom;
-
 };
