@@ -45,10 +45,10 @@ void AAuraCharacter::OnRep_PlayerState()
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
+	//get player state from PAWN and initialize ability system actor info and then get pointers from there 
 	AAuraPlayerState* auraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(auraPlayerState);
 	auraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(auraPlayerState, this);
-
 	// Set the pointers
 	abilitySystemComponent = auraPlayerState->GetAbilitySystemComponent();
 	attributeSet = auraPlayerState->GetAttributeSet();
@@ -60,5 +60,4 @@ void AAuraCharacter::InitAbilityActorInfo()
 			auraHud->InitOverlay(auraPlayerController, auraPlayerState, abilitySystemComponent, attributeSet);
 		}
 	}
-
 }

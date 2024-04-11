@@ -13,7 +13,6 @@ AAuraEnemy::AAuraEnemy()
 	abilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	abilitySystemComponent->SetIsReplicated(true);
 	abilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
-	
 	attributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 
 }

@@ -4,19 +4,16 @@
 #include "AbilitySystemComponent.h"
 #include <AbilitySystemBlueprintLibrary.h>
 
-
 AAuraEffectActor::AAuraEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot")));
-
 }
 
 void AAuraEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 void AAuraEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplayEffect> GameplayEffectClass)
