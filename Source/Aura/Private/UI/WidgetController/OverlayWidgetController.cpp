@@ -2,6 +2,8 @@
 
 
 #include "UI/WidgetController/OverlayWidgetController.h"
+
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 
 void UOverlayWidgetController::BroadCastInitialValues()
@@ -30,6 +32,17 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	//Mana
 	abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AAS->GetmanaAttribute()).AddUObject(this, &ThisClass::ManaChanged);
 	abilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AAS->GetmaxManaAttribute()).AddUObject(this, &ThisClass::MaxManaChanged);
+	//AuraAbilitySystemComponent
+	Cast<UAuraAbilitySystemComponent>(abilitySystemComponent)->EffectAssetTags_Delegate.AddLambda(
+		[](const FGameplayTagContainer& TagContainer)
+		{
+			for (const FGameplayTag& tag : TagContainer)
+			{
+				//Aura avility system component is broad casting this
+				GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("GE tag: %s"), *tag.GetTagName().ToString()));
+			}
+		}
+	);
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
