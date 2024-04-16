@@ -38,10 +38,15 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		{
 			for (const FGameplayTag& tag : TagContainer)
 			{
-				//Aura avility system component is broad casting this
-				GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("GE tag: %s"), *tag.GetTagName().ToString()));
-				
-				FUIWidgetRow* Row =  GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, tag);
+				//For example, say that Tag = Message.HealthPotion
+				//Message.HealthPotion.MatchesTag("Message") => true | Message.MatchesTag("Message.HealthPotion") => false;
+				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+
+				if(tag.MatchesTag(MessageTag))
+				{
+					const FUIWidgetRow* Row =  GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, tag);
+					MessageWidgetRowSignature_Delegate.Broadcast(*Row);
+				}
 			}
 		}
 	);
