@@ -4,9 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffectTypes.h"
 #include "AuraEffectActor.generated.h"
 
-class USphereComponent;
+class UGameplayEffect;
+class UAbilitySystemComponent;
+
+UENUM(BlueprintType)
+enum class EEffectApplicationPolicy
+{
+	ApplyOnOverlap,
+	ApplyOnEndOverlap,
+	DoNotApply
+};
+
+UENUM(BlueprintType)
+enum class EEffectRemovalPolicy
+{
+	RemoveOnEndOverlap,
+	DoNotRemove
+};
 
 UCLASS()
 class AURA_API AAuraEffectActor : public AActor
@@ -16,24 +33,45 @@ class AURA_API AAuraEffectActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AAuraEffectActor();
-
-	UFUNCTION()
-	virtual void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
-private:
+	UFUNCTION(BlueprintCallable)
+	void OnOverlap(AActor* OverlappedActor);
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> mesh;
+	UFUNCTION(BlueprintCallable)
+	void OnEndOverlap(AActor* OverlappedActor);
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> sphere;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	bool bDestroyOnEffectRemoval = false;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	EEffectApplicationPolicy InstantEffectAplicationPolicy = EEffectApplicationPolicy::DoNotApply;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	EEffectApplicationPolicy DurationEffectAplicationPolicy = EEffectApplicationPolicy::DoNotApply;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	EEffectApplicationPolicy InfiniteEffectAplicationPolicy = EEffectApplicationPolicy::DoNotApply;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::RemoveOnEndOverlap;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
+
+	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
+	//use when apply game play effecet
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
+	float ActorLevel = 1.f;;
 };

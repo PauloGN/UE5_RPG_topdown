@@ -10,10 +10,9 @@ AAuraPlayerState::AAuraPlayerState()
 {
 	abilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	abilitySystemComponent->SetIsReplicated(true);
+	//Sets how game play effects will be replicated to clients
 	abilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
-
 	attributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
-
 	//How often the server will try to update clients
 	NetUpdateFrequency = 100.f;
 }

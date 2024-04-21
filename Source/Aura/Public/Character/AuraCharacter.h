@@ -25,5 +25,5 @@ public:
 	TObjectPtr<class USpringArmComponent> cameraBoom;
 
 private:
-	void InitAbilityActorInfo();
+	virtual void InitAbilityActorInfo() override;
 };

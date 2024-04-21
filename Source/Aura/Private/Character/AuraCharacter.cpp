@@ -9,6 +9,7 @@
 #include <GameFramework/SpringArmComponent.h>
 #include <UI/HUD/AuraHUD.h>
 
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Player/AuraPlayerController.h"
 
 AAuraCharacter::AAuraCharacter()
@@ -45,9 +46,11 @@ void AAuraCharacter::OnRep_PlayerState()
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
+	//get player state from PAWN and initialize ability system actor info and then get pointers from there 
 	AAuraPlayerState* auraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(auraPlayerState);
 	auraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(auraPlayerState, this);
+	Cast<UAuraAbilitySystemComponent>(auraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 
 	// Set the pointers
 	abilitySystemComponent = auraPlayerState->GetAbilitySystemComponent();
@@ -60,5 +63,4 @@ void AAuraCharacter::InitAbilityActorInfo()
 			auraHud->InitOverlay(auraPlayerController, auraPlayerState, abilitySystemComponent, attributeSet);
 		}
 	}
-
 }
