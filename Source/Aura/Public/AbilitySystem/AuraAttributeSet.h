@@ -47,7 +47,6 @@ struct FEffectProperties
 
 	UPROPERTY()
 	ACharacter* TargetCharacter = nullptr;
-
 };
 
 /**
@@ -67,6 +66,45 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+#pragma region Primary Attributes
+	/**
+	 * RPG Style
+	 */
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Primary Attributes")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Strength)
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Intelligence, Category = "Primary Attributes")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Intelligence)
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resilience, Category = "Primary Attributes")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Resilience)
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "Primary Attributes")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Vigor)
+
+	//REP Notify functions
+	UFUNCTION()
+	void OnRep_Strength(const FGameplayAttributeData& oldStrength) const;
+
+	UFUNCTION()
+	void OnRep_Intelligence(const FGameplayAttributeData& oldIntelligence) const;
+
+	UFUNCTION()
+	void OnRep_Resilience(const FGameplayAttributeData& oldResilience) const;
+
+	UFUNCTION()
+	void OnRep_Vigor(const FGameplayAttributeData& oldVigor) const;
+#pragma endregion
+
+#pragma region Vital Attributes
+
+	/**
+	 * Life AND MANA 
+	 */
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
 	FGameplayAttributeData health;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, health)
@@ -83,6 +121,7 @@ public:
 	FGameplayAttributeData maxMana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, maxMana)
 
+	//Rep notify functions
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& oldHealth) const;
 	UFUNCTION()
@@ -91,6 +130,7 @@ public:
 	void OnRep_Mana(const FGameplayAttributeData& oldMana) const;
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& oldMaxMana) const;
+#pragma endregion
 
 private:
 
