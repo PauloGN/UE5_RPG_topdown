@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayEffect.h"
 #include "GameFramework/Character.h"
 #include "AuraCharacterBase.generated.h"
 
@@ -27,6 +28,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combate")
 	TObjectPtr<USkeletalMeshComponent> weapon;
 
+#pragma region GAS
+
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> abilitySystemComponent;
 
@@ -34,4 +37,16 @@ protected:
 	TObjectPtr<UAttributeSet> attributeSet;
 
 	virtual void InitAbilityActorInfo();
+
+	//Gameplay Effects
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	void InitializePrimaryAttributes() const;
+
+
+#pragma endregion
+
+
 };

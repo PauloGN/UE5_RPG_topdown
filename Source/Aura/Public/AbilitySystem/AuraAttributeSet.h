@@ -101,7 +101,6 @@ public:
 #pragma endregion
 
 #pragma region Vital Attributes
-
 	/**
 	 * Life AND MANA 
 	 */
