@@ -44,9 +44,5 @@ protected:
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
 	void InitializePrimaryAttributes() const;
-
-
 #pragma endregion
-
-
 };
