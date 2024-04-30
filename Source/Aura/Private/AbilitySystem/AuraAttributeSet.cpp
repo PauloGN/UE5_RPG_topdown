@@ -9,7 +9,7 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	//Max health and max mana are initialized by game play effect
+	//Max health and max mana are initialized by game play effect in blueprint
 	Inithealth(10.0f);
 	Initmana(50.0f);
 }
