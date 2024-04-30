@@ -9,10 +9,9 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
+	//Max health and max mana are initialized by game play effect
 	Inithealth(10.0f);
-	InitmaxHealth(100.0f);
 	Initmana(50.0f);
-	InitmaxMana(100.0f);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
