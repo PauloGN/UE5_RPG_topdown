@@ -14,13 +14,14 @@ AAuraEnemy::AAuraEnemy()
 	abilitySystemComponent->SetIsReplicated(true);
 	abilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	attributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
-
 }
 
 void AAuraEnemy::HighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(true);
 	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+
+	//DrawDebugSphere(GetWorld(), GetActorLocation(), 50, 20, FColor::Red, false, 2);
 
 	weapon->SetRenderCustomDepth(true);
 	weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
@@ -43,5 +44,4 @@ void AAuraEnemy::InitAbilityActorInfo()
 {
 	abilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UAuraAbilitySystemComponent>(abilitySystemComponent)->AbilityActorInfoSet();
-
 }

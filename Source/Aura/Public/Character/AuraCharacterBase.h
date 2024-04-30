@@ -9,6 +9,7 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class UGameplayEffect;
 
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -27,6 +28,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combate")
 	TObjectPtr<USkeletalMeshComponent> weapon;
 
+#pragma region GAS
+
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> abilitySystemComponent;
 
@@ -34,4 +37,16 @@ protected:
 	TObjectPtr<UAttributeSet> attributeSet;
 
 	virtual void InitAbilityActorInfo();
+
+	//Gameplay Effects
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
+
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GamePlayEffectClass, float level) const;
+	void InitializeDefaultAttributes() const;
+#pragma endregion
 };

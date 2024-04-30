@@ -73,7 +73,7 @@ void AAuraPlayerController::SetupInputComponent()
 
 	enhancedInputComponent->BindAction(moveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
 	enhancedInputComponent->BindAction(lookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
-	enhancedInputComponent->BindAction(allowCameraAction, ETriggerEvent::Triggered, this, &ThisClass::AllowCameraMove);
+	enhancedInputComponent->BindAction(allowCameraAction, ETriggerEvent::Started, this, &ThisClass::AllowCameraMove);
 	enhancedInputComponent->BindAction(allowCameraAction, ETriggerEvent::Completed, this, &ThisClass::AllowCameraMove);
 	enhancedInputComponent->BindAction(zoomIn, ETriggerEvent::Triggered, this, &ThisClass::ZoomInFun);
 	enhancedInputComponent->BindAction(zoomOut, ETriggerEvent::Triggered, this, &ThisClass::ZoomOutFun);
@@ -194,11 +194,9 @@ void AAuraPlayerController::CursorTrace()
 		{
 			//case b
 			thisActor->HighlightActor();
-
 		}else
 		{
-			//case a
-
+			//case a -> Both are null
 		}
 	}else
 	{
@@ -206,7 +204,6 @@ void AAuraPlayerController::CursorTrace()
 		{
 			//case c
 			lastActor->UnHighlightActor();
-
 		}else//both actors are not null (both are valid)
 		{
 			if(lastActor != thisActor)

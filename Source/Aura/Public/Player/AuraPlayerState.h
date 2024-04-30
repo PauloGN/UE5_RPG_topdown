@@ -24,12 +24,23 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 
+	//Replication
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 protected:
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> abilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> attributeSet;
-	
+
+private:
+
+	UPROPERTY(ReplicatedUsing = OnRep_Level, VisibleAnywhere)
+	int32 Level = 1;
+
+	UFUNCTION()
+	void OnRep_Level(int32 OldLevel);
+
 };
